@@ -19,83 +19,38 @@ import matplotlib.pyplot as plt
 # y0= 50
 
 # =============================================================================
+# create a fixed number of agents and number of iterations
+# =============================================================================
+num_of_agents= 10
+num_of_iterations= 100
+
+# =============================================================================
 # create a list of agents to better store the coordinates
 # =============================================================================
 agents= []
 
 # =============================================================================
-# random walk one step for the first set of agents
+# loop through agents number and append coordinates
 # =============================================================================
-# if random.random() < 0.5:
-#     y0 += 1
-# else:
-#     y0 -= 1
-
-# if random.random() < 0.5:
-#     x0 += 1
-# else:
-#     x0 -= 1
-
-# print(y0, x0) 
+for i in range(num_of_agents):
+    agents.append([random.randint(0,100), random.randint(0,100)])
 
 # =============================================================================
-# make new sets of agents and move them once as previous agents
+# this moves the agents for a number of times within a number of iterations
 # =============================================================================
-# y1= 50
-# x1= 50
-
-
-# =============================================================================
-# append the coordinates to the agents list, this adds the first set of coordinates
-# =============================================================================
-agents.append([random.randint(0,99),random.randint(0,99)])
-print (agents) #prints first set of agents list
-
-# =============================================================================
-# append new set of coordinates to the list
-# =============================================================================
-agents.append([random.randint(0,99),random.randint(0,99)])
-print (agents) #prints the whole list of first and second coordinates
-
-# =============================================================================
-# random walk for new agents set
-# =============================================================================
-# if random.random() < 0.5:
-#     y1+=1
-# else:
-#     y1-=1
-
-# if random.random() < 0.5:
-#     x1+=1
-# else:
-#     x1-=1
-# print (y1,x1)
-
-# =============================================================================
-# take first random walk with first set of coordinates
-# =============================================================================
-if random.random() < 0.5:
-    agents[0][0] += 1
-else:
-    agents[0][0] -= 1
-
-if random.random() < 0.5:
-    agents[0][1] += 1
-else:
-    agents[0][1] -= 1
-
-# =============================================================================
-# take first random walk with second set of coordinates
-# =============================================================================
-if random.random() < 0.5:
-    agents[1][0] += 1
-else:
-    agents[1][0] -= 1
-
-if random.random() < 0.5:
-    agents[1][1] += 1
-else:
-    agents[1][1] -= 1
+for j in range(num_of_iterations):
+    for i in range(num_of_agents):
+        # Change y 
+        # use the torus solution to create boundary solutions
+        if random.random() < 0.5:
+            agents[i][0] = (agents[i][0] + 1) % 100
+        else:
+            agents[i][0] = (agents[i][0] - 1) % 100
+        # Change x
+        if random.random() < 0.5:
+            agents[i][1] = (agents[i][1] + 1) % 100
+        else:
+            agents[i][1] = (agents[i][1] - 1) % 100
 
 # =============================================================================
 # print agent list after movement
@@ -103,28 +58,30 @@ else:
 print (agents)
 
 # =============================================================================
-# print maximum agent
+# plot the agents on a scatter graoh
 # =============================================================================
-print (max(agents))
-
-#this gets the second element in the list using index
-print(max(agents, key=operator.itemgetter(1)))    
-
-#Plot the agents on a graph
 plt.ylim(0, 100)
 plt.xlim(0, 100)
-plt.scatter(agents[0][1],agents[0][0])
-plt.scatter(agents[1][1],agents[1][0])
-plt.show()
-
-# make the most easterly coordinate have red colour
-m = max(agents, key=operator.itemgetter(1))
-plt.scatter(m[1],m[0], color='red')
-plt.show()
+for i in range(num_of_agents):
+    plt.scatter(agents[i][1],agents[i][0])
+plt.show() 
 
 # =============================================================================
-# Find the distance between the coordinates
+# Calculate the left most, right most, upmost, and downmost agents 
+# plot them in different colours
 # =============================================================================
-# distance= (((y0-y1)**2) + ((x0-x1)**2))**0.5
-# print (distance)
-
+for i in range(num_of_agents):
+    plt.scatter(agents[i][1],agents[i][0], color='grey')
+    # make the most easterly coordinate have red colour
+    e = max(agents, key=operator.itemgetter(1))
+    plt.scatter(e[1],e[0], color='red')
+    #plot the upmost coordinate with black colour
+    u = max(agents, key=operator.itemgetter(0))
+    plt.scatter(u[1],u[0], color='black')
+    #plot the downmost coordinate with blue colour
+    d = min(agents, key=operator.itemgetter(0))
+    plt.scatter(d[1],d[0], color='blue')
+    #plot the most west coordinate with green colour
+    w = min(agents, key=operator.itemgetter(1))
+    plt.scatter(w[1],w[0], color='green')
+plt.show()
