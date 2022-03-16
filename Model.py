@@ -4,8 +4,7 @@ Created on Mon Jan 31 17:37:01 2022
 
 This practical begins the building of the Model program. 
 Variables representing two agents' locations (y and x coordinates) were created. 
-The agents move around through a random walk. 
-Once they have moved a couple of steps, the distance between them was calculated.
+The agents move around through a random walk, and the distance between them was calculated.
 
 @author: IYANULOLUWA
 """
