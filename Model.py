@@ -11,77 +11,132 @@ The agents move around through a random walk, and the distance between them was 
 import random
 import operator
 import matplotlib.pyplot as plt
+import time
 
 # =============================================================================
-# set first set of variables (agents)
+# function that returns number of agents
 # =============================================================================
-# x0= 50
-# y0= 50
+def distance_between(agents_row_a, agents_row_b): 
+    """
+
+   This calculates the distance between agents_row_a and agents_row_b and returns the result.
+
+    Parameters
+    ----------
+    a : agents_row_a
+        This is one of the agents.
+    b : agents_row_b
+        This is one of the agents.
+    
+    Returns
+    -------
+    Number
+        Distance between agents_row_a and agents_row_b.
+
+    >>> a= agents[0]
+    >>> b= agents[1]
+    >>> print (a)
+    >>> print (b)
+    >>> distance_between(a,b)
+        [75, 21]
+        [26, 19]
+        49.040799340956916
+
+    """
+    return (((agents_row_a[0] - agents_row_b[0])**2) + ((agents_row_a[1] - agents_row_b[1])**2))**0.5
 
 # =============================================================================
 # create a fixed number of agents and number of iterations
 # =============================================================================
-num_of_agents= 10
-num_of_iterations= 100
+# num_of_agents= 10
+# num_of_iterations= 100
 
 # =============================================================================
-# create a list of agents to better store the coordinates
+# try a variety of different orders of magnitude of agent numbers and iterations 
 # =============================================================================
-agents= []
+list_num_agents = [_ for _ in range(10, 60, 10)]
+num_of_iterations = 100
 
 # =============================================================================
-# loop through agents number and append coordinates
+# create lists that hold the time, maximum, minimum and distance for various agent pairs.
 # =============================================================================
-for i in range(num_of_agents):
-    agents.append([random.randint(0,100), random.randint(0,100)])
+time_list = []
+max_list = []
+min_list = []
+list_distance = []
 
 # =============================================================================
-# this moves the agents for a number of times within a number of iterations
+# loop through the list of number of agents to get each agents pair
 # =============================================================================
-for j in range(num_of_iterations):
+for num_of_agents in list_num_agents:
+    agents= []
+    for i in range (num_of_agents):
+        agents.append([random.randint(0,99),random.randint(0,99)]) #this makes sure we do not create x0 and y0  
+    
+# =============================================================================
+#     this moves the agents for a number of times within a number of iterations
+# =============================================================================
+    for j in range(num_of_iterations):
+        for i in range(num_of_agents):
+            # Change y and solve boundary effects
+            if random.random() < 0.5:
+                agents[i][0] = (agents[i][0] + 1) % 100
+            else:
+                agents[i][0] = (agents[i][0] - 1) % 100
+            # Change x and solve boundary effects
+            if random.random() < 0.5:
+                agents[i][1] = (agents[i][1] + 1) % 100
+            else:
+                agents[i][1] = (agents[i][1] - 1) % 100
+    
+# =============================================================================
+#     plot the agents on a scatter plot            
+# =============================================================================
+    plt.xlim(0,100)
+    plt.ylim(0,100)
+    plt.figure #creates a new figure instance so you can draw a new plot on the figure
+    ax = plt.gca() #gets the current figure axes to set the title
+    for j in range(num_of_iterations):
+        for i in range(num_of_agents):
+            ax.scatter(agents[i][0], agents[i][1])
+    ax.set_title(f"Agents scatter plot: {num_of_agents} agents")
+    plt.show()
+    
+# =============================================================================
+#     time code to check for computational effects
+# =============================================================================
+    start = time.process_time()
+    # The code to run, here.
+    distance_list= []
     for i in range(num_of_agents):
-        # Change y 
-        # use the torus solution to create boundary solutions
-        if random.random() < 0.5:
-            agents[i][0] = (agents[i][0] + 1) % 100
-        else:
-            agents[i][0] = (agents[i][0] - 1) % 100
-        # Change x
-        if random.random() < 0.5:
-            agents[i][1] = (agents[i][1] + 1) % 100
-        else:
-            agents[i][1] = (agents[i][1] - 1) % 100
+        for j in range(num_of_agents):
+            if (i>j): #this ensures there is no repition amongst the agents pairs
+                distance = distance_between(agents[j], agents[i])
+                distance_list.append(distance)
+                # print ("Agent pairs {0} and {1} are:" .format (j,i), agents[j], agents[i])
+                # print ("The distance between agent pairs {0} and {1}  is: " . format(j,i), distance)
+    #for the above, if you use i!=j, you get 90 distances in the distance list, it repeats
+    end = time.process_time()
+    time_list.append(end - start)
+    max_list.append(max(distance_list))
+    min_list.append(min(distance_list))
+    list_distance.append((len(distance_list), distance_list))
 
 # =============================================================================
-# print agent list after movement
+#     Displays the time, maximum agent pair distance and minimum agent pair distance
 # =============================================================================
-print (agents)
-
+    print(f"Properties for {num_of_agents} agents:")    
+    print(f"time = {str(end - start)}")
+    
+    #find the maximum and minimum distance between the agent pair distances
+    print (f"Maximum agents pairs distance is {max(distance_list)}")
+    print (f"Minimum agents pairs distance is {min(distance_list)}\n\n")
+    
 # =============================================================================
-# plot the agents on a scatter graoh
+# Plots graphs of the agents against time (at different magnitudes)
 # =============================================================================
-plt.ylim(0, 100)
-plt.xlim(0, 100)
-for i in range(num_of_agents):
-    plt.scatter(agents[i][1],agents[i][0])
-plt.show() 
-
-# =============================================================================
-# Calculate the left most, right most, upmost, and downmost agents 
-# plot them in different colours
-# =============================================================================
-for i in range(num_of_agents):
-    plt.scatter(agents[i][1],agents[i][0], color='grey')
-    # make the most easterly coordinate have red colour
-    e = max(agents, key=operator.itemgetter(1))
-    plt.scatter(e[1],e[0], color='red')
-    #plot the upmost coordinate with black colour
-    u = max(agents, key=operator.itemgetter(0))
-    plt.scatter(u[1],u[0], color='black')
-    #plot the downmost coordinate with blue colour
-    d = min(agents, key=operator.itemgetter(0))
-    plt.scatter(d[1],d[0], color='blue')
-    #plot the most west coordinate with green colour
-    w = min(agents, key=operator.itemgetter(1))
-    plt.scatter(w[1],w[0], color='green')
+figure = plt.figure
+ax = plt.gca()
+ax.scatter(list_num_agents, time_list)
+ax.set_title("Number of agents against time")
 plt.show()
