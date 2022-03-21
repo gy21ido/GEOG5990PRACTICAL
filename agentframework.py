@@ -9,7 +9,7 @@ import random
 
 #create class Agent
 class Agent:
-    def __init__ (self):  
+    def __init__ (self,environment):  
         """
 This initialises variables x and y
         Parameters
@@ -25,9 +25,10 @@ This initialises variables x and y
             Agents coordinates.
 
         """
-        self._x = random.randint(0,99)
-        self._y = random.randint(0,99)
-        # self.environment= environment
+        self._x = random.randint(0,len(environment))
+        self._y = random.randint(0,len(environment[0]))
+        self.environment= environment
+        self.store= 0
         
     #this function gets the attribute value of x        
     def get_x(self):
@@ -50,17 +51,31 @@ This initialises variables x and y
     y= property(get_y,set_y, "I am the 'y' property")
     
     def move(self): #this method moves the agents between random positions
-        # nrows = len(self.environment)
-        # ncols = len(self.environment[0])
+        nrows = len(self.environment)
+        ncols = len(self.environment[0])
         if random.random() < 0.5:
-            self.x = self.x + 1 #% ncols
+            self._x = (self._x + 1) % ncols
         else:
-            self.x = self.x - 1 #% ncols
+            self._x = (self._x - 1) % ncols
 
         if random.random() < 0.5:
-            self.y = self.y + 1 #% nrows
+            self._y = (self._y + 1) % nrows
         else:
-            self.y = self.y- 1 #% nrows
+            self._y = (self._y- 1) % nrows
+            
+    def eat(self): # can you make it eat what is left?
+        eat_space = 10 # Amount of unit space to eat
+        if self.store >= 100: # If the agent has eaten at least 100 units
+                self.environment[self._y][self._x] += self.store # Vomit all the units eaten on a particular location
+                self.store = 0 # Empty the agents bowel
+        else: # If the agent has eaten less than 100 units
+            if self.environment[self._y][self._x] > 0:
+                if self.environment[self._y][self._x] >= eat_space:
+                    self.environment[self._y][self._x] -= eat_space
+                    self.store += 10
+                else:
+                    self.environment[self._y][self._x] = 0   
+                    self.store += self.environment[self._y][self._x]
     
     #function to calculate the distance between agents (adapted from former function in Model.py)
     def distance_between(self, agent):
@@ -82,4 +97,13 @@ This initialises variables x and y
 
 
         """
-        return (((agent.x - self.x)**2) + ((agent.y - self.y)**2))**0.5   
+        return (((agent._x - self._x)**2) + ((agent._y - self._y)**2))**0.5   
+    
+    #Can you override __str__(self) in the agents, as mentioned in the lecture on classes, 
+#so that they display this information information about their location and stores when printed?            
+ 
+    def __str__(self): 
+        return f"Location: ({self.x}, {self.y})\tStore: {self.store}"
+    
+    def __repr__(self):
+        return self.__str__()
