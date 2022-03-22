@@ -9,7 +9,7 @@ import random
 
 #create class Agent
 class Agent:
-    def __init__ (self,environment):  
+    def __init__ (self, environment, agents):  
         """
 This initialises variables x and y
         Parameters
@@ -29,6 +29,7 @@ This initialises variables x and y
         self._y = random.randint(0,len(environment[0]))
         self.environment= environment
         self.store= 0
+        self.agents= agents
         
     #this function gets the attribute value of x        
     def get_x(self):
@@ -76,6 +77,22 @@ This initialises variables x and y
                 else:
                     self.environment[self._y][self._x] = 0   
                     self.store += self.environment[self._y][self._x]
+    
+    def share_with_neighbours(self, neighbourhood):
+        
+        #go through the agents list and find others within the neighbourhood distance
+        # Loop through the agents in self.agents 
+        for agent in self.agents:
+        # Calculate the distance between self and the current other agent:   
+            distance= self.distance_between(agent)
+            if (distance <= neighbourhood):
+                # share
+                sum = self.store + agent.store
+                ave = sum /2
+                self.store = ave
+                agent.store = ave
+                #check it works
+                print ("sharing" + str(distance) + " " + str(ave))
     
     #function to calculate the distance between agents (adapted from former function in Model.py)
     def distance_between(self, agent):

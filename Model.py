@@ -40,9 +40,12 @@ num_of_agents = 10
 num_of_iterations = 100
 agents = []
 
+#neighbourhood communication
+neighbourhood= 20
+
 # Make the agents.
 for i in range(num_of_agents):
-    agents.append(agentframework.Agent(environment))
+    agents.append(agentframework.Agent(environment, agents))
 
 #test to see it works
 # a = agentframework.Agent()
@@ -52,8 +55,10 @@ for i in range(num_of_agents):
 for j in range(num_of_iterations):
     for i in range(num_of_agents):
         agents[i].move()
+        #make the agents eat in the environment
         agents[i].eat()
-        
+     #make the agents interact with neighbourhood agents in their environment
+        agents[i].share_with_neighbours(neighbourhood)   
 #test to see it works
 # a.move()
 # print (f"Agent coordinates after moving: {a.y, a.x}")
