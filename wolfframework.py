@@ -9,7 +9,7 @@ import random
 
 #create class Agent
 class Agent:
-    def __init__ (self, environment, agents, sheep_pace):  
+    def __init__ (self, environment, agents):  
         """
 This initialises variables x and y
         Parameters
@@ -30,7 +30,6 @@ This initialises variables x and y
         self.environment= environment
         self.store= 0
         self.agents= agents
-        self.sheep_pace = sheep_pace # Default pace of sheep
         
     #this function gets the attribute value of x        
     def get_x(self):
@@ -55,9 +54,9 @@ This initialises variables x and y
     def move(self): #this method moves the agents between random positions
         if (self.store < 50):
             #set the movement to be faster if they have more resources
-            d = self.sheep_pace - 3 #distance of movement for less than 50
+            d = 1 #distance of movement for less than 50
         else:
-            d = self.sheep_pace #distance of movement for greater than 50
+            d = 5 #distance of movement for greater than 50
         nrows = len(self.environment)
         ncols = len(self.environment[0])
         if random.random() < 0.5:
