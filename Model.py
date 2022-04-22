@@ -21,6 +21,21 @@ import requests
 import bs4
 import sys
 
+root = tkinter.Tk()     #builds the main window 'root'
+root.wm_title("Agent Based Model")
+agents = []
+wolves = []
+
+sheep_pace = 5 # The pace of the sheep
+sheep_colour = ['blue', 'pink']
+wolf_colour = ['black', 'gold']
+gender = ["m", "f"]
+permitted_graze_amount = 60000 #control the amount of environment that is eaten
+a = 0 # Number of iterations incrementing
+grazed_land = 0 # Amount of environment grazed
+
+carry_on = True
+
 #download html data using python through web scraping method
 r= requests.get('https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html')
 content= r.text
@@ -29,15 +44,15 @@ soup= bs4.BeautifulSoup(content, 'html.parser')
 tds_y= soup.find_all(attrs= {"class": "y"})
 tds_x= soup.find_all(attrs= {"class": "x"})
 #print (tds_y)
-# print (len(tds_x)) 
-# sys.exit()
+# print (len(tds_x))
+
 # Get the user to interact with the model by providing the number of agents and iterations
 right_input = False
 while(not right_input):
     try:
         print("Press q to QUIT!")
         num_of_agents = input (f'Enter an integer number of agents between 0 and {len(tds_y)}: ')
-        if(num_of_agents == "q" or num_of_agents == "Q" ):
+        if(num_of_agents == "q" or num_of_agents == "Q"):
             sys.exit()
         num_of_iterations = input ('Enter an integer number of iterations between 0 and 200: ')
         if(num_of_iterations == "q" or num_of_iterations == "Q"):
@@ -60,18 +75,6 @@ while(not right_input):
     except ValueError:
         print("The input is invalid, please try again!\n\n")
 
-agents = []
-wolves = []
-
-sheep_pace = 5 # The pace of the sheep
-sheep_colour = ['blue', 'pink']
-wolf_colour = ['black', 'gold']
-gender = ["m", "f"]
-heat_period = 10 #controls agents population, the lower the number the higher the population
-# sheep_breeding = int(num_of_iterations / heat_period)
-num = int(num_of_iterations / 2) #control wolves population
-a = 0 # Number of iterations incrementing
-
 # Read in environment
 #open the txt file as csv
 file = open('in.txt', newline='') 
@@ -93,17 +96,6 @@ neighbourhood= 20
 fig = plt.figure(figsize=(7, 7))
 ax = fig.add_axes([0, 0, 1, 1])
 
-# # Make the agents.
-# random.shuffle(agents)
-# for i in range(num_of_agents):
-#     #random_seed +=1    
-#     # y = random.randint(0,len(environment))
-#     # x = random.randint(0,len(environment[0]))
-    
-#     y= int(tds_y[i].text)
-#     x= int(tds_x[i].text)
-#     agents.append(agentframework.Agent(x , y,environment, agents))
-
 # Make the agents
 random.shuffle(agents)
 for i in range(num_of_agents):
@@ -124,25 +116,24 @@ for i in range(num_of_wolves):
 # b = wolfframework.Wolf()
 # print (f"Agent coordinates before moving: {b.y, b.x}")
 
-carry_on = True
-
 def update(frame_number):
     fig.clear()  
     global carry_on
-    global heat_period
+    global grazed_land # Amount of environment grazed
+    food_unit_eaten = 0
 
-# Move the agents.
-# for j in range(num_of_iterations):
     # Agents will move and eat
-    # for i in range(num_of_agents):
     for i in range(len(agents)):
-        agents[i].move()
-        #make the agents eat in the environment
-        agents[i].eat()
-        #make the agents interact with neighbourhood agents in their environment
-        agents[i].share_with_neighbours(neighbourhood)
+        if(grazed_land <= permitted_graze_amount):
+            agents[i].move()
+            #make the agents eat in the environment
+            food_unit_eaten = agents[i].eat()
+            #make the agents interact with neighbourhood agents in their environment
+            agents[i].share_with_neighbours(neighbourhood)
         # Sheep breeds      
         agents[i].breed()
+        grazed_land += food_unit_eaten
+    
     
     # Wolves will move and eat
     for i in range(len(wolves)):
@@ -166,7 +157,6 @@ def update(frame_number):
     # Wolves
     for i in range(len(wolves)):
         plt.scatter(wolves[i].x,wolves[i].y, color = wolves[i].colour)
-    #plt.show() # Display environment including sheep and wolves
 
 def gen_function(b = [0]):
     global a
@@ -179,10 +169,7 @@ def gen_function(b = [0]):
 def run():
     animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
     canvas.draw()
-
-root = tkinter.Tk()     #builds the main window 'root'
-root.wm_title("Agent Based Model")
-
+    
 #create and lay out a matplotlib canvas embedded within our window and associated with fig, our matplotlib figure
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
 canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1) 
@@ -195,6 +182,8 @@ model_menu= tkinter.Menu(menu_bar)
 menu_bar.add_cascade(label= "Model", menu= model_menu)
 model_menu.add_command(label= "Run Model", command= run)
 
-tkinter.mainloop() #wait for user interactions
-
+try:
+    tkinter.mainloop() #wait for user interactions
+except KeyboardInterrupt:
+    root.destroy()
     

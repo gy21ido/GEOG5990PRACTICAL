@@ -125,14 +125,16 @@ class Agent:
         if self.store >= 100: # If the agent has eaten at least 100 units
                 self.environment[self._y][self._x] += self.store # Vomit all the units eaten on a particular location
                 self.store = 0 # Empty the agents bowel
-        else: # If the agent has eaten less than 100 units
-            if self.environment[self._y][self._x] > 0:
-                if self.environment[self._y][self._x] >= eat_space:
-                    self.environment[self._y][self._x] -= eat_space
-                    self.store += 10
-                else:
-                    self.environment[self._y][self._x] = 0   
-                    self.store += self.environment[self._y][self._x]
+                return 0
+        if self.environment[self._y][self._x] > 0:
+            if self.environment[self._y][self._x] >= eat_space:
+                self.environment[self._y][self._x] -= eat_space
+                self.store += eat_space
+                return eat_space
+            else:
+                self.environment[self._y][self._x] = 0   
+                self.store += self.environment[self._y][self._x]
+                return self.environment[self._y][self._x]
     
     # Breeding among sheep
     def breed(self):
