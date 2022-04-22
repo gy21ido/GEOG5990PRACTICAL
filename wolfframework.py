@@ -6,23 +6,31 @@ Created on Wed Mar 16 16:37:44 2022
 """
 
 import random
+import agentframework
 
 #create class Agent
-class Agent:
-    def __init__ (self, environment, agents):  
+class Wolf:
+    # Class variables
+    Wolf_id = 0 # Wolf id
+    attack_distance = 2
+    gender = ["m", "f"]
+    child_colour = 'red'
+    breed_distance = 1
+    
+    def __init__ (self, environment, agents, wolves, wolf_pace, gender, colour):  
         """
-This initialises variables x and y
-        Parameters
-        ----------
-        x : Agent 
-            This is one of the agents
-        y : Agent
-            This is one of the agents.
-
-        Returns
-        -------
-        Number
-            Agents coordinates.
+            This initialises variables x and y
+            Parameters
+            ----------
+            x : Agent 
+                This is one of the agents
+            y : Agent
+                This is one of the agents.
+    
+            Returns
+            -------
+            Number
+                Agents coordinates.
 
         """
         self._x = random.randint(0,len(environment))
@@ -30,6 +38,16 @@ This initialises variables x and y
         self.environment= environment
         self.store= 0
         self.agents= agents
+        self.wolves= wolves
+        self.wolf_pace = wolf_pace
+        self.gender = gender # gender of the wolf
+        self.colour = colour # colour of wolf
+        self.id = self.create_new_wolf()
+        
+    # Creates new Wolf
+    def create_new_wolf(self):
+        Wolf.Wolf_id += 1
+        return Wolf.Wolf_id
         
     #this function gets the attribute value of x        
     def get_x(self):
@@ -51,14 +69,15 @@ This initialises variables x and y
     
     y= property(get_y,set_y, "I am the 'y' property")
     
-    def move(self): #this method moves the agents between random positions
-        if (self.store < 50):
-            #set the movement to be faster if they have more resources
-            d = 1 #distance of movement for less than 50
-        else:
-            d = 5 #distance of movement for greater than 50
+    def move(self): #The wolf moves twice as fast as the sheep
+        # if (self.store < 50):
+        #     #set the movement to be faster if they have more resources
+        #     d = 1 #distance of movement for less than 50
+        # else:
+        #     d = wolf_pace #distance of movement for greater than 50
         nrows = len(self.environment)
         ncols = len(self.environment[0])
+        d = self.wolf_pace
         if random.random() < 0.5:
             self._x = (self._x + d) % ncols
         else:
@@ -70,21 +89,26 @@ This initialises variables x and y
             self._y = (self._y- d) % nrows
             
     def eat(self): # can you make it eat what is left?
-        eat_space = 10 # Amount of unit space to eat
-        if self.store >= 100: # If the agent has eaten at least 100 units
-                self.environment[self._y][self._x] += self.store # Vomit all the units eaten on a particular location
-                self.store = 0 # Empty the agents bowel
-        else: # If the agent has eaten less than 100 units
-            if self.environment[self._y][self._x] > 0:
-                if self.environment[self._y][self._x] >= eat_space:
-                    self.environment[self._y][self._x] -= eat_space
-                    self.store += 10
-                else:
-                    self.environment[self._y][self._x] = 0   
-                    self.store += self.environment[self._y][self._x]
-    
+        for index, agent in enumerate(self.agents):
+            distance = self.distance_between(agent)
+            if(distance <= Wolf.attack_distance):
+                print(f"This agent is dead: {agent}")
+                self.agents.pop(index)
+                agentframework.Agent.Agent_id -= 1
+                break;
+                
+    # Breeding among wolves
+    def breed(self):
+        for index, wolve in enumerate(self.wolves):
+            # Cannot mate with itself or with a sheep of the same gender
+            # Must be close enought (within a proximity of 2 units)
+            if(not(self.gender == wolve.gender) and (self.distance_between(wolve) <= Wolf.breed_distance)):
+                i = random.randint(-1, 1)
+                new_child = Wolf(self.environment, self.agents, self.wolves, self.wolf_pace, Wolf.gender[i % 2], Wolf.child_colour)
+                self.wolves.append(new_child)
+                print(f"A wolf child is created - Location: {self.x}, {self.y}")
+                
     def share_with_neighbours(self, neighbourhood):
-        
         #go through the agents list and find others within the neighbourhood distance
         # Loop through the agents in self.agents 
         for agent in self.agents:
