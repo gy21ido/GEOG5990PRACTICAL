@@ -14,20 +14,43 @@ import agentframework
 import wolfframework
 import csv
 import matplotlib.animation 
+import matplotlib
+matplotlib.use('TkAgg')
+import tkinter 
+import requests
+import bs4
+import sys
 
+#download html data using python through web scraping method
+r= requests.get('https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html')
+content= r.text
+
+soup= bs4.BeautifulSoup(content, 'html.parser')
+tds_y= soup.find_all(attrs= {"class": "y"})
+tds_x= soup.find_all(attrs= {"class": "x"})
+#print (tds_y)
+# print (len(tds_x)) 
+# sys.exit()
 # Get the user to interact with the model by providing the number of agents and iterations
 right_input = False
 while(not right_input):
     try:
-        num_of_agents = input ('Enter an integer number of agents between 0 and 300: ')
+        print("Press q to QUIT!")
+        num_of_agents = input (f'Enter an integer number of agents between 0 and {len(tds_y)}: ')
+        if(num_of_agents == "q" or num_of_agents == "Q" ):
+            sys.exit()
         num_of_iterations = input ('Enter an integer number of iterations between 0 and 200: ')
+        if(num_of_iterations == "q" or num_of_iterations == "Q"):
+            sys.exit()
         num_of_wolves = input ('Enter an integer to represent number of wolves between 0 and 50: ')
         # Check if the inputs are correct
+        if(num_of_wolves == "q" or num_of_wolves == "Q"):
+            sys.exit()
         if(num_of_agents.isnumeric() & num_of_iterations.isnumeric() & num_of_wolves.isnumeric()):
             num_of_agents = int(num_of_agents)
             num_of_iterations = int(num_of_iterations)
             num_of_wolves = int(num_of_wolves)
-            if(num_of_agents >= 0 & num_of_agents <= 300 & num_of_iterations > 0 & num_of_iterations <= 200 & num_of_wolves >= 0 & num_of_wolves <= 50):
+            if(num_of_agents >= 0 and num_of_agents <= len(tds_y) and num_of_iterations > 0 and num_of_iterations <= 200 and num_of_wolves >= 0 and num_of_wolves <= 50):
                 right_input = True
                 break
             else:
@@ -70,11 +93,23 @@ neighbourhood= 20
 fig = plt.figure(figsize=(7, 7))
 ax = fig.add_axes([0, 0, 1, 1])
 
+# # Make the agents.
+# random.shuffle(agents)
+# for i in range(num_of_agents):
+#     #random_seed +=1    
+#     # y = random.randint(0,len(environment))
+#     # x = random.randint(0,len(environment[0]))
+    
+#     y= int(tds_y[i].text)
+#     x= int(tds_x[i].text)
+#     agents.append(agentframework.Agent(x , y,environment, agents))
 
 # Make the agents
 random.shuffle(agents)
 for i in range(num_of_agents):
-    agents.append(agentframework.Agent(environment, agents, sheep_pace, gender[i % 2], sheep_colour[i % 2]))
+    y= int(tds_y[i].text)
+    x= int(tds_x[i].text)
+    agents.append(agentframework.Agent(environment, agents, sheep_pace, gender[i % 2], sheep_colour[i % 2], x = x, y = y))
     
 # Make the wolves
 random.shuffle(wolves)
@@ -131,7 +166,7 @@ def update(frame_number):
     # Wolves
     for i in range(len(wolves)):
         plt.scatter(wolves[i].x,wolves[i].y, color = wolves[i].colour)
-    plt.show() # Display environment including sheep and wolves
+    #plt.show() # Display environment including sheep and wolves
 
 def gen_function(b = [0]):
     global a
@@ -141,9 +176,25 @@ def gen_function(b = [0]):
         a = a + 1
         
 #create a function to run the model
-# def run():
-# print(f"Agents: {agentframework.Agent.Agent_id}") # Get the number of agents created
-animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
-# canvas.draw()
-plt.show()
+def run():
+    animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
+    canvas.draw()
+
+root = tkinter.Tk()     #builds the main window 'root'
+root.wm_title("Agent Based Model")
+
+#create and lay out a matplotlib canvas embedded within our window and associated with fig, our matplotlib figure
+canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
+canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1) 
+
+menu_bar= tkinter.Menu(root)
+button = tkinter.Button(root, text = "Click and Quit", command = root.destroy)
+button.pack()
+root.config(menu= menu_bar)
+model_menu= tkinter.Menu(menu_bar)
+menu_bar.add_cascade(label= "Model", menu= model_menu)
+model_menu.add_command(label= "Run Model", command= run)
+
+tkinter.mainloop() #wait for user interactions
+
     

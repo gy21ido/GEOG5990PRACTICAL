@@ -12,10 +12,10 @@ class Agent:
     # Class variables
     Agent_id = 0 # Sheep id
     gender = ["m", "f"]
-    breed_distance = 2
+    breed_distance = 1
     
     # Function definitions    
-    def __init__ (self, environment, agents, sheep_pace, gender, colour, child=False):  
+    def __init__ (self, environment, agents, sheep_pace, gender, colour, x = None, y = None, child=False,):  
         """
         This initialises variables x and y
         Parameters
@@ -31,8 +31,12 @@ class Agent:
             Agents coordinates.
 
         """
-        self._x = random.randint(0,len(environment))
-        self._y = random.randint(0,len(environment[0]))
+        if(x == None or y == None):
+            self._x = random.randint(0,len(environment))
+            self._y = random.randint(0,len(environment[0]))
+        else:
+            self._x = x
+            self._y = y
         self.environment= environment
         self.store= 0
         self.agents= agents
@@ -146,7 +150,7 @@ class Agent:
             if(not(self.child) and not(self.gender == agent.gender) and (self.distance_between(agent) <= Agent.breed_distance)):
                 i = random.randint(-1, 1)
                 # self.agents.append(Agent(self.environment, self.agents, self.sheep_pace, Agent.gender[i % 2], "white"))
-                new_child = Agent(self.environment, self.agents, self.sheep_pace, Agent.gender[i], "white", child=True)
+                new_child = Agent(self.environment, self.agents, self.sheep_pace, Agent.gender[i], colour="white", child=True)
                 self.agents.append(new_child)
                 print(f"An agent child is created - Location: {self.x}, {self.y}")
             # if(distance <= 5):
