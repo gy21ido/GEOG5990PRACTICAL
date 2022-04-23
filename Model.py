@@ -6,16 +6,17 @@ This model shows an environment with full breeding population of agents and wolv
 Agents interact with the environment by eating it, while wolves interact with agents by eating them.
 Breeding is added to populate the environment, as both wolves and agents breed with one another.
 
+Version: 1.0.0
 @author: IYANULOLUWA
 """
 import random
 import matplotlib.pyplot as plt
 import agentframework
-import wolfframework
 import csv
 import matplotlib.animation 
 import matplotlib
-matplotlib.use('TkAgg')
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+#matplotlib.use('TkAgg')
 import tkinter 
 import requests
 import bs4
@@ -106,7 +107,7 @@ for i in range(num_of_agents):
 # Make the wolves
 random.shuffle(wolves)
 for i in range(num_of_wolves):
-    wolves.append(wolfframework.Wolf(environment, agents, wolves, 2 * sheep_pace, gender[i % 2], wolf_colour[i % 2]))
+    wolves.append(agentframework.Wolf(environment, agents, wolves, 2 * sheep_pace, gender[i % 2], wolf_colour[i % 2]))
 
 #test to see it works
 # a = agentframework.Agent()
@@ -167,11 +168,19 @@ def gen_function(b = [0]):
         
 #create a function to run the model
 def run():
+    """
+    
+
+    Returns
+    -------
+    None.
+
+    """
     animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
     canvas.draw()
     
 #create and lay out a matplotlib canvas embedded within our window and associated with fig, our matplotlib figure
-canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
+canvas = FigureCanvasTkAgg(fig, master=root)
 canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1) 
 
 menu_bar= tkinter.Menu(root)
@@ -186,4 +195,3 @@ try:
     tkinter.mainloop() #wait for user interactions
 except KeyboardInterrupt:
     root.destroy()
-    
