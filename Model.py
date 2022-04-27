@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-10
 """
 Created on Mon Jan 31 17:37:01 2022
-
 This model shows an environment with full breeding population of agents and wolves. 
 Agents interact with the environment by eating it, while wolves interact with agents by eating them.
 Breeding is added to populate the environment, as both wolves and agents breed with one another.
 
-Version: 1.0.1
+Version: 1.1.0
 
 @author: 201576424
 
@@ -25,6 +24,7 @@ import tkinter
 import requests
 import bs4
 import sys
+import time
 
 #variables declarations for tkinter window
 root = tkinter.Tk()     #builds the main tkinter window 'root'
@@ -33,11 +33,11 @@ root.wm_title("Agent Based Model") #add a title to the tkinter window
 #agents variables declaration
 agents = [] #empty list to store the agents coordinates
 sheep_pace = 5 # The pace of the sheep
-sheep_colour = ['blue', 'pink'] #colours to identify sheep after breeding (male- blue, female- pink)
+sheep_colour = ['blue', 'blue'] #colours to identify sheep after breeding (male- blue, female- pink)
 
 #wolves variables declaration
 wolves = [] #empty list to store the agents predators (wolves) coordinates
-wolf_colour = ['black', 'gold'] #colours to identify wolves after breeding (male- black, female- gold)
+wolf_colour = ['black', 'black'] #colours to identify wolves after breeding (male- black, female- gold)
 
 #gender for both agents and sheep (m- male, f-female)
 gender = ["m", "f"]
@@ -48,6 +48,10 @@ a = 0 # Number of iterations incrementing
 grazed_land = 0 # Amount of environment grazed
 
 carry_on = True
+
+# List to hold the distance between any two agents and any two wolves
+max_distance = []
+wolf_max_distance = []
 
 #download html data using python through web scraping method
 r= requests.get('https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html')
@@ -139,15 +143,18 @@ for i in range(num_of_wolves):
 
 def update(frame_number):
     '''
-    Updates the tkinter window/ frame
-
-    Parameters
-    ----------
-    frame_number : int (optional)
+        Updates the tkinter window/ frame
+    
+        Parameters
+        ----------
+        frame_number : int (optional)
+            
+        Returns
+        -------
+            A change in the plot within tkinter.
         
-    Returns
-    -------
-    None.
+        >>> update(0)
+    
 
     '''
     fig.clear()  
@@ -193,17 +200,17 @@ def update(frame_number):
 
 def gen_function(b = [0]):
     '''
-    Function to generate the frame
-
-    Parameters
-    ----------
-    b : int, optional
-        DESCRIPTION. The default is [0].
-
-    Yields
-    ------
-    int
-        value for the frames generated.
+        Function to generate the frame
+    
+        Parameters
+        ----------
+        b : int, optional
+            DESCRIPTION. The default is [0].
+    
+        Yields
+        ------
+        int
+            value for the frames generated.
 
     '''
     global a
@@ -215,11 +222,11 @@ def gen_function(b = [0]):
 #create a function to run the model
 def run():
     """
-    Runs the animated model
-
-    Returns
-    -------
-    Animation is generated from matplotlib function that calls the gen_function
+        Runs the animated model
+    
+        Returns
+        -------
+        Animation is generated from matplotlib function that calls the gen_function
 
     """
     animation = matplotlib.animation.FuncAnimation(fig, update, frames = gen_function, repeat=False)
@@ -240,5 +247,75 @@ model_menu.add_command(label= "Run Model", command= run)
 #try/except to catch error associated with two windows opening and code not stopping after iteration ends
 try:
     tkinter.mainloop() #wait for user interactions
+    pass
 except KeyboardInterrupt:
     root.destroy()
+
+#Statistics from the model (for agents)
+# Calculate the left most, right most, upmost, and downmost agents 
+# plot them in different colours
+# =============================================================================
+# make the most easterly coordinate have red colour
+e = max(agents, key = lambda agent: agent.get_y())
+print(f"Agent farthest to the East is: {e}")
+plt.scatter(e.get_x(), e.get_y(), color='red')
+# #plot the upmost coordinate with black colour
+u = max(agents, key = lambda agent: agent.get_x())
+print(f"Agent farthest to the North is: {u}")
+plt.scatter(u.get_x(), u.get_y(), color='pink')
+# #plot the downmost coordinate with blue colour
+d = min(agents, key = lambda agent: agent.get_x())
+print(f"Agent farthest to the South is: {d}")
+plt.scatter(d.get_x(), d.get_y(), color='green')
+# #plot the most west coordinate with green colour
+w = min(agents, key = lambda agent: agent.get_x())
+print(f"Agent farthest to the West is: {w}")
+plt.scatter(w.get_x(), w.get_y(), color='gold')
+    
+# Largest distance between any two agent
+for start, agent in enumerate(agents): # Loop through each agent
+    if(start == len(agents) - 1): # Check if at the last agent the come out of loop
+        break
+    for index in range(start + 1, len(agents)): # Get the distance between two agents
+        max_distance.append(agent.distance_between(agents[index]))
+print(f"The maximum distance between any two agent is: {max(max_distance)}")
+
+# Get birth rate
+birth_death_rate = (len(agents) - num_of_agents) / num_of_agents
+print(f"Agents' Population growth is: {(birth_death_rate * 100):.2f}%")
+print(f"Agents' birth rate is: {(100 * agentframework.Agent.children / num_of_agents):.2f}%")
+print(f"Agents' death rate is: {(100 * agentframework.Wolf.agents_eaten / num_of_agents):.2f}%")
+
+#Statistics from the model (wolves)
+# Calculate the left most, right most, upmost, and downmost agents 
+# plot them in different colours
+# =============================================================================
+# make the most easterly coordinate have red colour
+p = max(wolves, key = lambda wolf: wolf.get_y())
+print(f"Wolf farthest to the East is: {p}")
+plt.scatter(p.get_x(), p.get_y(), color='purple')
+#plot the upmost coordinate with black colour
+q = max(wolves, key = lambda wolf: wolf.get_x())
+print(f"Wolf farthest to the North is: {q}")
+plt.scatter(q.get_x(), q.get_y(), color='maroon')
+#plot the downmost coordinate with blue colour
+r = min(wolves, key = lambda wolf: wolf.get_x())
+print(f"Wolf farthest to the South is: {r}")
+plt.scatter(r.get_x(), r.get_y(), color='darkgreen')
+#plot the most west coordinate with green colour
+s = min(wolves, key = lambda wolf: wolf.get_x())
+print(f"Wolf farthest to the West is: {s}")
+plt.scatter(s.get_x(), s.get_y(), color='orange')
+    
+# Largest distance between any two wolves
+for start, wolf in enumerate(wolves): # Loop through each wolf
+    if(start == len(wolves) - 1): # Check if at the last wolf the come out of loop
+        break
+    for index in range(start + 1, len(wolves)): # Get the distance between two agents
+        wolf_max_distance.append(agent.distance_between(wolves[index]))
+print(f"The maximum distance between any two wolves is: {max(max_distance)}")
+
+# Get birth rate
+wolves_birth_rate = (len(wolves) - num_of_wolves) / num_of_wolves
+print(f"Wolves' Population growth is: {(wolves_birth_rate * 100):.2f}%")
+print(f"Wolves' birth rate is: {(100 * agentframework.Wolf.children / num_of_wolves):.2f}%")

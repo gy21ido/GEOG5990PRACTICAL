@@ -6,10 +6,10 @@ This file contains all codes about the agents and agents predator (Wolves).
 Here, behaviours such as how they move, share with their neighbours, eat, and breed to populate themselves are
 included. Properties of each agent is also included in the file.
 
-
-Version: 1.0.1
+Version: 1.1.0
 
 @author: 201576424
+
 """
 
 #import module to be used
@@ -17,16 +17,20 @@ import random
 
 #create class Agent
 class Agent:
-    
+    '''
+    This Class contains methods required for the agents behaviour with 
+    themselves and their environment
+    '''
     # Class attributes
-    Agent_id = 0 # Sheep id
     gender = ["m", "f"] #Sheep gender for breeding
-    breed_distance = 1 #Required distance for breeding to take place
+    breed_distance = 3 #Required distance for breeding to take place
+    children = 0 # Number of children
     
     # Function definitions 
     def __init__ (self, environment, agents, sheep_pace, gender, colour, x = None, y = None, child=False):  
         """
-            Creates an Agent within an environment, with pace, gender, colour, and children
+            Creates an Agent within an environment, with pace, gender, 
+            colour, and children
             
             Parameters
             ----------
@@ -60,22 +64,7 @@ class Agent:
         self.sheep_pace = sheep_pace # Default pace of sheep
         self.gender = gender # gender of the sheep
         self.colour = colour # colour of sheep
-        self.id = self.create_new_sheep() #breeding sheep
         self.child = child #new sheep child created
-        
-    # Creates new sheep (breeding)
-    def create_new_sheep(self):
-        """
-            This creates new agents.
-            
-            Returns
-            -------
-            int
-                Total number of agents.
-
-        """
-        Agent.Agent_id += 1
-        return Agent.Agent_id
         
     #this function gets the attribute value of x        
     def get_x(self):
@@ -84,8 +73,12 @@ class Agent:
 
         Returns
         -------
-        str
-            x attribute
+        int
+            x position value
+        
+        >>> a = agent.get_x()
+        >>> print (a)
+            205
 
         '''
         return self._x
@@ -97,12 +90,19 @@ class Agent:
 
         Parameters
         ----------
-        value : str
-            x attribute
+        value : int
+            x value
 
         Returns
         -------
-        None.
+        New value for x position.
+        
+        >>> a = agent
+        >>> print (a)
+            Location: (205, 149)	Store: 100.0
+        >>> c = agent.set_x(2)
+        >>> print (agent)
+            Location: (2, 149)	Store: 100.0
 
         '''
         self._x = value
@@ -116,8 +116,12 @@ class Agent:
 
         Returns
         -------
-        str
-            y attribute
+        int
+            y value
+            
+        >>> a = agent.get_y()
+        >>> print (a)
+            149
 
         '''
         return self._y
@@ -129,12 +133,19 @@ class Agent:
 
         Parameters
         ----------
-        value : str
-            y attribute
+        value : int
+            Value for y position
 
         Returns
         -------
-        None.
+        New value for y position
+        
+        >>> a = agent
+        >>> print (a)
+            Location: (205, 149)	Store: 100.0
+        >>> c = agent.set_y(100)
+        >>> print (agent)
+            Location: (205, 100)	Store: 100.0
 
         '''
         self._y = value
@@ -148,7 +159,13 @@ class Agent:
 
         Returns
         -------
-        None.
+        Coordinates y and x
+        
+        >>> print (agent)
+            Location: (13, 146)	Store: 0.0
+        >>> agent.move()
+        >>> print (agent)
+            Location: (15, 148)	Store: 0.0
 
         """           
         if (self.store < 50):
@@ -170,18 +187,27 @@ class Agent:
             
     def eat(self): 
         """
-        This makes the agents eat the environment and their eating is controlled.
-        If an agent eats at least 100 units, it vomits and empties its bowel (Store) and stops eating.
+        This makes the agents eat the environment and their eating is 
+        controlled.
+        If an agent eats at least 100 units, it vomits and empties its bowel 
+        (Store) and stops eating.
         
         Returns
         -------
-        None.
-
+        Increased store value after eating.
+        
+        >>> print (agent)
+            Location: (15, 148)	Store: 0.0
+        >>> agent.eat()
+        >>> print (agent)
+            Location: (15, 148)	Store: 10.0
+            
         """
         
         eat_space = 10 # Amount of unit space to eat
         if self.store >= 100: # If the agent has eaten at least 100 units
-                self.environment[self._y][self._x] += self.store # Vomit all units eaten on a particular location
+                # Vomit all units eaten on a particular location
+                self.environment[self._y][self._x] += self.store 
                 self.store = 0 # Empty the agents bowel
                 return 0
         if self.environment[self._y][self._x] > 0:
@@ -198,27 +224,28 @@ class Agent:
     def breed(self):
         """
         This method is for breeding among agents
-        Agents must be close enough (2 units proximity) to breed 
+        Agents must be close enough (3 units proximity) to breed 
         Children cannot breed.
 
         Returns
         -------
         None.
 
+        >>> agent.breed()
+        
         """
-        for index, agent in enumerate(self.agents):
+        for agent in self.agents:
             # Cannot mate with itself or with a sheep of the same gender
             # Must be close enough (within a proximity of 2 units)
-            if(not(self.child) and not(self.gender == agent.gender) and (self.distance_between(agent) <= Agent.breed_distance)):
+            if(not(self.child) and not(self.gender == agent.gender) and 
+               (self.distance_between(agent) <= Agent.breed_distance)):
                 i = random.randint(-1, 1)
-                # self.agents.append(Agent(self.environment, self.agents, self.sheep_pace, Agent.gender[i % 2], "white"))
-                new_child = Agent(self.environment, self.agents, self.sheep_pace, Agent.gender[i], colour="white", child=True)
+                new_child = Agent(self.environment, self.agents, self.sheep_pace,
+                                  Agent.gender[i], colour="white", child=True)
                 self.agents.append(new_child)
+                Agent.children += 1;
                 print(f"An agent child is created - {self}")
-            # if(distance <= 5):
-            #     print(f"This agent is dead: {agent}")
-            #     self.agents.pop(index)
-            #     break
+
     
     def share_with_neighbours(self, neighbourhood):
         """
@@ -231,8 +258,15 @@ class Agent:
 
         Returns
         -------
-        None.
-
+        int/float
+            New store value upon sharing with neighbour
+        
+        >>> print (agent)
+            Location: (15, 148)	Store: 10.0
+        >>> agent.share_with_neighbours(50)
+        >>> print (agent)
+            Location: (15, 148)	Store: 73.75
+        
         """
         #go through the agents list and find others within the neighbourhood distance
         # Loop through the agents in self.agents 
@@ -262,6 +296,13 @@ class Agent:
             -------
             int
                 Distance between agents.
+            
+            >>> a= agents[0]
+            >>> print (a)
+                Location: (22, 269)	Store: 30.0
+            >>> b = agent.distance_between(a)
+            >>> print (b)
+                75.69015788066504
 
         """
         return (((agent._x - self._x)**2) + ((agent._y - self._y)**2))**0.5   
@@ -277,6 +318,14 @@ class Agent:
         -------
         str
            Agents' location and store
+        
+        >>> print (agent)
+            Location: (15, 148)	Store: 73.75
+        >>> agent.__str__()
+            'Location: (15, 148)\tStore: 73.75'
+        >>> print(agent.__str__())
+            Location: (15, 148)	Store: 73.75
+        
         """
         return f"Location: ({self.x}, {self.y})\tStore: {self.store}"
     
@@ -288,6 +337,11 @@ class Agent:
         -------
         str
             agents location and store
+            
+        >>> print (agent)
+            Location: (15, 148)	Store: 73.75
+        >>> agent.__repr__()
+            'Location: (15, 148)\tStore: 73.75'
 
         """
         return self.__str__()
@@ -295,13 +349,17 @@ class Agent:
 
 #create class Wolf
 class Wolf:
+    '''
+    This class contains all methods required for the wolves behaviours.
+    '''
     
     # Class variables
-    Wolf_id = 0 # Wolf id
+    agents_eaten = 0 # Wolf id
     attack_distance = 2
     gender = ["m", "f"]
-    child_colour = 'red'
-    breed_distance = 1
+    child_colour = 'white'
+    breed_distance = 2
+    children = 0
     
     def __init__ (self, environment, agents, wolves, wolf_pace, gender, colour):  
         """
@@ -316,7 +374,7 @@ class Wolf:
             wolf_pace :  int
                 Pace given to the wolves before they eat the agents 
             gender : str
-                WOlves gender (default is 'm' and 'f')
+                Wolves gender (default is 'm' and 'f')
             colour : str
                 Various colour given to the agents and their children
             
@@ -330,31 +388,35 @@ class Wolf:
         self.wolf_pace = wolf_pace
         self.gender = gender # gender of the wolf
         self.colour = colour # colour of wolf
-        self.id = self.create_new_wolf()
-        
-    # Creates new Wolf
-    def create_new_wolf(self):
-        '''
-        Creates a wolf, increases when each new wolf is created.
 
-        Returns
-        -------
-        int
-            Total number of wolves, adult child.
-
-        '''
-        Wolf.Wolf_id += 1
-        return Wolf.Wolf_id
-        
     #this function gets the attribute value of x        
     def get_x(self):
         '''
-            Gets the wolves attributes
+            Gets the wolves x value
     
             Returns
             -------
-            str
-                Wolves attributes.
+            int
+                Positional value for y.
+                
+            >>> wolves
+                [Location: (111, 277)	Store: 0,
+                 Location: (114, 124)	Store: 0,
+                 Location: (74, 163)	Store: 0,
+                 Location: (246, 198)	Store: 0,
+                 Location: (114, 148)	Store: 0,
+                 Location: (123, 270)	Store: 0,
+                 Location: (142, 273)	Store: 0]
+            >>> for wolf in wolves:
+                    wolf.get_x()
+                    print (wolf.get_x())
+                111
+                114
+                74
+                246
+                114
+                123
+                142
 
         '''
         return self._x
@@ -366,13 +428,20 @@ class Wolf:
     
             Parameters
             ----------
-            value : str
-                wolves x attributes.
+            value : int
+                wolves x position value.
     
             Returns
             -------
-            None.
-
+            int
+                New value for x position
+            
+            >>> print (wolves[0])
+                Location: (111, 277)	Store: 0
+            >>> wolf.wolves[0].set_x(2)
+            >>> print (wolves[0])
+                Location: (2, 277)	Store: 0
+                
         '''
         self._x = value
     
@@ -385,8 +454,27 @@ class Wolf:
     
             Returns
             -------
-            str
-                wolves attributes.
+            int
+                wolves y value.
+            
+            >>> wolves
+                [Location: (111, 277)	Store: 0,
+                 Location: (114, 124)	Store: 0,
+                 Location: (74, 163)	Store: 0,
+                 Location: (246, 198)	Store: 0,
+                 Location: (114, 148)	Store: 0,
+                 Location: (123, 270)	Store: 0,
+                 Location: (142, 273)	Store: 0]
+            >>> for wolf in wolves:
+                    wolf.get_y()
+                    print (wolf.get_y())
+                277
+                124
+                163
+                198
+                148
+                270
+                273
 
         '''
         return self._y
@@ -398,13 +486,20 @@ class Wolf:
     
             Parameters
             ----------
-            value : str
-                Wolves attribute value.
+            value : int
+                New value for position y.
     
             Returns
             -------
-            None.
-
+            int
+                New value for the y position
+            
+            >>> print (wolves[0])
+                Location: (111, 277)	Store: 0
+            >>> wolf.wolves[0].set_y(20)
+            >>> print (wolves[0])
+                Location: (111, 20)	Store: 0
+                
         '''
         self._y = value
     
@@ -417,7 +512,14 @@ class Wolf:
     
             Returns
             -------
-            None.
+            str
+                Positions x and y for wolves after moving
+            
+            >>> wolves[0]
+                Location: (292, 227)	Store: 0
+            >>> wolves[0].move()
+            >>> wolves[0]
+                Location: (282, 237)	Store: 0
 
         '''
         # if (self.store < 50):
@@ -443,29 +545,41 @@ class Wolf:
     def eat(self): 
         '''
             Wolves eating the agents based on attack distance
+            Default value is 2 units
     
             Returns
             -------
             None.
-
+            
+            >>> wolves[0]
+                Location: (282, 237)	Store: 0
+            >>> wolves[0].eat()
+            >>> wolves[0]
+                Location: (282, 237)	Store: 0
         '''
         for index, agent in enumerate(self.agents):
             distance = self.distance_between(agent)
             if(distance <= Wolf.attack_distance):
                 print(f"This agent is dead: {agent}")
                 self.agents.pop(index)
-                Wolf.Wolf_id -= 1
+                Wolf.agents_eaten += 1
                 break;
                 
     # Breeding among wolves
     def breed(self):
         '''
-            Breeding among wolves, breeding distance of 1 is given to ensure close proximity.
+            Breeding among wolves, breeding distance of 3 is given to ensure close proximity.
             Cannot mate with itself or with an agent of same gender.
     
             Returns
             -------
             None.
+            
+            >>> wolves[0]
+                Location: (282, 237)	Store: 0
+            >>> wolves[0].breed()
+            >>> wolves[0]
+                Location: (282, 237)	Store: 0
 
         '''
         for index, wolve in enumerate(self.wolves):
@@ -475,6 +589,7 @@ class Wolf:
                 i = random.randint(-1, 1)
                 new_child = Wolf(self.environment, self.agents, self.wolves, self.wolf_pace, Wolf.gender[i % 2], Wolf.child_colour)
                 self.wolves.append(new_child)
+                Wolf.children += 1;
                 print(f"A wolf child is created - {self}")
                
     #function to calculate the distance between wolves 
@@ -491,7 +606,13 @@ class Wolf:
             -------
             int
                 Distance between wolves.
-
+            
+            >>> a= wolves[0]
+            >>> print (a)
+                Location: (282, 237)	Store: 0
+            >>> b = agent.distance_between(a)
+            >>> print (b)
+                214.76731594914529
 
         """
         return (((agent._x - self._x)**2) + ((agent._y - self._y)**2))**0.5   
@@ -505,6 +626,13 @@ class Wolf:
             -------
             str
                 Location for Wolves.
+            
+            >>> print (wolf)
+                Location: (41, 28)	Store: 0
+            >>> wolf.__str__()
+                'Location: (41, 28)\tStore: 0'
+            >>> print(wolf.__str__())
+                Location: (41, 28)	Store: 0
 
         '''
         return f"Location: ({self.x}, {self.y})\tStore: {self.store}"
@@ -517,6 +645,11 @@ class Wolf:
         -------
         str
             wolves location and store
+        
+        >>> print (wolf)
+            Location: (41, 28)	Store: 0
+        >>> wolf.__repr__()
+            'Location: (41, 28)\tStore: 0'
 
         '''
         return self.__str__()
