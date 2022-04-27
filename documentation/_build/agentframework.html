@@ -1,0 +1,576 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>agentframework module &#8212; Agent Based Modelling 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Model module" href="Model.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Model.html" title="Model module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Agent Based Modelling 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">agentframework module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-agentframework">
+<span id="agentframework-module"></span><h1>agentframework module<a class="headerlink" href="#module-agentframework" title="Permalink to this headline">¶</a></h1>
+<p>This file contains all codes about the agents and agents predator (Wolves).
+Here, behaviours such as how they move, share with their neighbours, eat, and breed to populate themselves are
+included. Properties of each agent is also included in the file.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="agentframework.Agent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">agentframework.</span></span><span class="sig-name descname"><span class="pre">Agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheep_pace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">child</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This Class contains methods required for the agents behaviour with 
+themselves and their environment</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Agent.breed">
+<span class="sig-name descname"><span class="pre">breed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent.breed" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is for breeding among agents
+Agents must be close enough (3 units proximity) to breed 
+Children cannot breed.</p>
+<p>None.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">agent</span><span class="o">.</span><span class="n">breed</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="agentframework.Agent.breed_distance">
+<span class="sig-name descname"><span class="pre">breed_distance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#agentframework.Agent.breed_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="agentframework.Agent.children">
+<span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#agentframework.Agent.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Agent.distance_between">
+<span class="sig-name descname"><span class="pre">distance_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent.distance_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>This calculates the distance between agents and returns the result.</p>
+<p>agent: int</p>
+<dl class="simple">
+<dt>int</dt><dd><p>Distance between agents.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span> <span class="n">agents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">    Location: (22, 269)     Store: 30.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">distance_between</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">    75.69015788066504</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Agent.eat">
+<span class="sig-name descname"><span class="pre">eat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent.eat" title="Permalink to this definition">¶</a></dt>
+<dd><p>This makes the agents eat the environment and their eating is 
+controlled.
+If an agent eats at least 100 units, it vomits and empties its bowel 
+(Store) and stops eating.</p>
+<p>Increased store value after eating.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+<span class="go">    Location: (15, 148) Store: 0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agent</span><span class="o">.</span><span class="n">eat</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+<span class="go">    Location: (15, 148) Store: 10.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="agentframework.Agent.gender">
+<span class="sig-name descname"><span class="pre">gender</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['m',</span> <span class="pre">'f']</span></em><a class="headerlink" href="#agentframework.Agent.gender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Agent.get_x">
+<span class="sig-name descname"><span class="pre">get_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent.get_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the attribute value of x</p>
+<dl class="simple">
+<dt>int</dt><dd><p>x position value</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">    205</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Agent.get_y">
+<span class="sig-name descname"><span class="pre">get_y</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent.get_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets attribute value of y</p>
+<dl class="simple">
+<dt>int</dt><dd><p>y value</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">    149</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Agent.move">
+<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method moves the agents between random positions
+Movement is faster if agents have more resources to share.</p>
+<p>Coordinates y and x</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+<span class="go">    Location: (13, 146) Store: 0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agent</span><span class="o">.</span><span class="n">move</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+<span class="go">    Location: (15, 148) Store: 0.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Agent.set_x">
+<span class="sig-name descname"><span class="pre">set_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent.set_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the attribute value of x</p>
+<dl class="simple">
+<dt>value<span class="classifier">int</span></dt><dd><p>x value</p>
+</dd>
+</dl>
+<p>New value for x position.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">agent</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">    Location: (205, 149)        Store: 100.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">set_x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+<span class="go">    Location: (2, 149)  Store: 100.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Agent.set_y">
+<span class="sig-name descname"><span class="pre">set_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent.set_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets y attribute</p>
+<dl class="simple">
+<dt>value<span class="classifier">int</span></dt><dd><p>Value for y position</p>
+</dd>
+</dl>
+<p>New value for y position</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">agent</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">    Location: (205, 149)        Store: 100.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+<span class="go">    Location: (205, 100)        Store: 100.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Agent.share_with_neighbours">
+<span class="sig-name descname"><span class="pre">share_with_neighbours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">neighbourhood</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Agent.share_with_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Neighbourhood distance for sharing among the agents</p>
+<dl class="simple">
+<dt>neighbourhood<span class="classifier">int</span></dt><dd><p>Sharing distance among agents</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>int/float</dt><dd><p>New store value upon sharing with neighbour</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+<span class="go">    Location: (15, 148) Store: 10.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agent</span><span class="o">.</span><span class="n">share_with_neighbours</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+<span class="go">    Location: (15, 148) Store: 73.75</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="agentframework.Agent.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#agentframework.Agent.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the attribute value of x</p>
+<dl class="simple">
+<dt>int</dt><dd><p>x position value</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">    205</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="agentframework.Agent.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#agentframework.Agent.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets attribute value of y</p>
+<dl class="simple">
+<dt>int</dt><dd><p>y value</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">    149</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="agentframework.Wolf">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">agentframework.</span></span><span class="sig-name descname"><span class="pre">Wolf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wolves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wolf_pace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Wolf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class contains all methods required for the wolves behaviours.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="agentframework.Wolf.agents_eaten">
+<span class="sig-name descname"><span class="pre">agents_eaten</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#agentframework.Wolf.agents_eaten" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="agentframework.Wolf.attack_distance">
+<span class="sig-name descname"><span class="pre">attack_distance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#agentframework.Wolf.attack_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Wolf.breed">
+<span class="sig-name descname"><span class="pre">breed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Wolf.breed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Breeding among wolves, breeding distance of 3 is given to ensure close proximity.
+Cannot mate with itself or with an agent of same gender.</p>
+<p>None.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">    Location: (282, 237)    Store: 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">breed</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">    Location: (282, 237)    Store: 0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="agentframework.Wolf.breed_distance">
+<span class="sig-name descname"><span class="pre">breed_distance</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#agentframework.Wolf.breed_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="agentframework.Wolf.child_colour">
+<span class="sig-name descname"><span class="pre">child_colour</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'white'</span></em><a class="headerlink" href="#agentframework.Wolf.child_colour" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="agentframework.Wolf.children">
+<span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#agentframework.Wolf.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Wolf.distance_between">
+<span class="sig-name descname"><span class="pre">distance_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Wolf.distance_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>This calculates the distance between wolves and returns the result.</p>
+<p>agent: int</p>
+<dl class="simple">
+<dt>int</dt><dd><p>Distance between wolves.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span> <span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">    Location: (282, 237)    Store: 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">distance_between</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">    214.76731594914529</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Wolf.eat">
+<span class="sig-name descname"><span class="pre">eat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Wolf.eat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wolves eating the agents based on attack distance
+Default value is 2 units</p>
+<p>None.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">    Location: (282, 237)    Store: 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">eat</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">    Location: (282, 237)    Store: 0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="agentframework.Wolf.gender">
+<span class="sig-name descname"><span class="pre">gender</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['m',</span> <span class="pre">'f']</span></em><a class="headerlink" href="#agentframework.Wolf.gender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Wolf.get_x">
+<span class="sig-name descname"><span class="pre">get_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Wolf.get_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the wolves x value</p>
+<dl class="simple">
+<dt>int</dt><dd><p>Positional value for y.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span>
+<span class="go">    [Location: (111, 277)   Store: 0,</span>
+<span class="go">     Location: (114, 124)   Store: 0,</span>
+<span class="go">     Location: (74, 163)    Store: 0,</span>
+<span class="go">     Location: (246, 198)   Store: 0,</span>
+<span class="go">     Location: (114, 148)   Store: 0,</span>
+<span class="go">     Location: (123, 270)   Store: 0,</span>
+<span class="go">     Location: (142, 273)   Store: 0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">wolf</span> <span class="ow">in</span> <span class="n">wolves</span><span class="p">:</span>
+<span class="go">        wolf.get_x()</span>
+<span class="go">        print (wolf.get_x())</span>
+<span class="go">    111</span>
+<span class="go">    114</span>
+<span class="go">    74</span>
+<span class="go">    246</span>
+<span class="go">    114</span>
+<span class="go">    123</span>
+<span class="go">    142</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Wolf.get_y">
+<span class="sig-name descname"><span class="pre">get_y</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Wolf.get_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the wolves y attributes</p>
+<dl class="simple">
+<dt>int</dt><dd><p>wolves y value.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span>
+<span class="go">    [Location: (111, 277)   Store: 0,</span>
+<span class="go">     Location: (114, 124)   Store: 0,</span>
+<span class="go">     Location: (74, 163)    Store: 0,</span>
+<span class="go">     Location: (246, 198)   Store: 0,</span>
+<span class="go">     Location: (114, 148)   Store: 0,</span>
+<span class="go">     Location: (123, 270)   Store: 0,</span>
+<span class="go">     Location: (142, 273)   Store: 0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">wolf</span> <span class="ow">in</span> <span class="n">wolves</span><span class="p">:</span>
+<span class="go">        wolf.get_y()</span>
+<span class="go">        print (wolf.get_y())</span>
+<span class="go">    277</span>
+<span class="go">    124</span>
+<span class="go">    163</span>
+<span class="go">    198</span>
+<span class="go">    148</span>
+<span class="go">    270</span>
+<span class="go">    273</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Wolf.move">
+<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Wolf.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the Wolves movement, which is faster than the agents so
+they can catch them fast and kill to eat</p>
+<dl class="simple">
+<dt>str</dt><dd><p>Positions x and y for wolves after moving</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">    Location: (292, 227)    Store: 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">move</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">    Location: (282, 237)    Store: 0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Wolf.set_x">
+<span class="sig-name descname"><span class="pre">set_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Wolf.set_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the wolves attributes (location and store)</p>
+<dl class="simple">
+<dt>value<span class="classifier">int</span></dt><dd><p>wolves x position value.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>int</dt><dd><p>New value for x position</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">    Location: (111, 277)    Store: 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wolf</span><span class="o">.</span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">    Location: (2, 277)      Store: 0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="agentframework.Wolf.set_y">
+<span class="sig-name descname"><span class="pre">set_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#agentframework.Wolf.set_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets wolves y attribute value</p>
+<dl class="simple">
+<dt>value<span class="classifier">int</span></dt><dd><p>New value for position y.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>int</dt><dd><p>New value for the y position</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">    Location: (111, 277)    Store: 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wolf</span><span class="o">.</span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">wolves</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">    Location: (111, 20)     Store: 0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="agentframework.Wolf.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#agentframework.Wolf.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the wolves x value</p>
+<dl class="simple">
+<dt>int</dt><dd><p>Positional value for y.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span>
+<span class="go">    [Location: (111, 277)   Store: 0,</span>
+<span class="go">     Location: (114, 124)   Store: 0,</span>
+<span class="go">     Location: (74, 163)    Store: 0,</span>
+<span class="go">     Location: (246, 198)   Store: 0,</span>
+<span class="go">     Location: (114, 148)   Store: 0,</span>
+<span class="go">     Location: (123, 270)   Store: 0,</span>
+<span class="go">     Location: (142, 273)   Store: 0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">wolf</span> <span class="ow">in</span> <span class="n">wolves</span><span class="p">:</span>
+<span class="go">        wolf.get_x()</span>
+<span class="go">        print (wolf.get_x())</span>
+<span class="go">    111</span>
+<span class="go">    114</span>
+<span class="go">    74</span>
+<span class="go">    246</span>
+<span class="go">    114</span>
+<span class="go">    123</span>
+<span class="go">    142</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="agentframework.Wolf.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#agentframework.Wolf.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the wolves y attributes</p>
+<dl class="simple">
+<dt>int</dt><dd><p>wolves y value.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wolves</span>
+<span class="go">    [Location: (111, 277)   Store: 0,</span>
+<span class="go">     Location: (114, 124)   Store: 0,</span>
+<span class="go">     Location: (74, 163)    Store: 0,</span>
+<span class="go">     Location: (246, 198)   Store: 0,</span>
+<span class="go">     Location: (114, 148)   Store: 0,</span>
+<span class="go">     Location: (123, 270)   Store: 0,</span>
+<span class="go">     Location: (142, 273)   Store: 0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">wolf</span> <span class="ow">in</span> <span class="n">wolves</span><span class="p">:</span>
+<span class="go">        wolf.get_y()</span>
+<span class="go">        print (wolf.get_y())</span>
+<span class="go">    277</span>
+<span class="go">    124</span>
+<span class="go">    163</span>
+<span class="go">    198</span>
+<span class="go">    148</span>
+<span class="go">    270</span>
+<span class="go">    273</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="Model.html"
+                          title="previous chapter">Model module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/agentframework.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Model.html" title="Model module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Agent Based Modelling 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">agentframework module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, 201576424.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>
