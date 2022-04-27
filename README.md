@@ -3,6 +3,7 @@ This repository is the online portfolio containing all codes and files for Agent
 ## Contents list
 Files included in the repository include: 
 * Agentframework.py (the class code for the Agents)
+* Wolfframework.py (the class code for Wolves- predator Agents)
 * Model.py (the code for the agent-based model)
 * environment.csv (file containing the environment where the agents interact with one another)
 * total.csv
