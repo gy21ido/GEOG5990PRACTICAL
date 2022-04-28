@@ -5,6 +5,7 @@ Files included in the repository include:
 * Agentframework.py (the class code for the Agents)
 * Model.py (the code for the agent-based model)
 * in.txt / environment.csv (file containing the environment where the agents interact with one another)
+* A documentation folder, download all files, and click the **index.html** to read the functions documentations and tests.
 
 ## What the Agent Based Model software is
 The Agent Based Model (ABM) is an Object-Oriented Programming and iterative model where agents perform various activities among one another and between the environment they occupy. Generally, just as every man has a stop in their day-to-day activities when a limit is reached, so do agents in ABM. The ABM expects three key codes before it can run to expectation:
