@@ -19,14 +19,14 @@ import csv
 import matplotlib.animation 
 import matplotlib
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-#matplotlib.use('TkAgg') 
+# matplotlib.use('TkAgg') 
 import tkinter 
 import requests
 import bs4
 import sys
 import time
 
-#variables declarations for tkinter window
+#function that updates the tkinter plot window with required variables
 def update(frame_number):
     '''
         Updates the tkinter window/ frame
@@ -122,7 +122,7 @@ def run():
     animation = matplotlib.animation.FuncAnimation(fig, update, frames = gen_function, repeat=False)
     canvas.draw()
 
-#
+#guard for the module names
 if __name__ == "__main__":
     #agents variables declaration
     agents = [] #empty list to store the agents coordinates
