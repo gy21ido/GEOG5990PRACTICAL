@@ -14,17 +14,20 @@ The Agent Based Model (ABM) is an Object-Oriented Programming and iterative mode
 
 ## Instructions to run the program
 **Note:** Refer to **KNOWN ISSUES** below first, so you know what to expect, especially the second point.
-1. Download all files stated above to your local machine (all found on the GitHub page).
-2. Run the **Model.py** file.
+1. Download all files stated above into a directory on your local machine (all found on the GitHub page).
+2. Run the **Model.py** file using either using any Development Environment, especially Spyder or navigate to the directory with the files and run from command prompt as shown below:
+```python
+python Model.py
+```
 3. For user interactivity, the code asks the user to input the: 
 - ***_Number of agents_*** as integer between 0 and 100,
 - ***_Number of iterations_*** between 0 and 200, 
 - ***_Number of wolves_*** between 0 and 50, and
 - ***_Number of loops_*** between 1 and 5 for timing.
 **Note:** User must enter a value within the boundaries for each variable. Also, user may quit before running the model by hitting **'q or Q'** key on their keyboards.
-3. A tkinter window pops up, click the **'Model'** button, then click on **'Run Model'**
+4. A tkinter window pops up, click the **'Model'** button, then click on **'Run Model'**
 **Note:** User runs the model the number of times stated in their chosen loop **(Agents are blue, Wolves are black in colour)**
-4. Exit the model using the **'Click and Quit'** button on the model frame or click the cross button at the frame edge
+5. Exit the model using the **'Click and Quit'** button on the model frame or click the cross button at the frame edge
 
 ## Expectations upon running the codes
 - User is expected to run the model file the number of times given as loop input.
